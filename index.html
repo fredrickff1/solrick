@@ -1,10 +1,120 @@
 <!DOCTYPE html>
-<html>
+<html lang="nb">
 <head>
-    <title>Bryllup</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#304d3c">
+    <meta name="description" content="Solveig og Fredrick skal gifte seg i 2027. Velkommen til vår bryllupsside!">
+    <title>Solveig &amp; Fredrick · Bryllup 2027</title>
+    <style>
+        :root { color-scheme: light; --forest: #304d3c; --cream: #f7f6ee; --sage: #dde4d5; --muted: #60705f; }
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { margin: 0; background: var(--cream); color: var(--forest); font-family: Georgia, "Times New Roman", serif; }
+        a { color: inherit; text-underline-offset: 5px; }
+        a:focus-visible { outline: 2px solid var(--forest); outline-offset: 6px; }
+        .navigation { max-width: 1280px; margin: auto; padding: 28px 6%; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+        .monogram { font-size: 25px; text-decoration: none; font-style: italic; }
+        .navigation > a:last-child { font: 11px/1.5 Arial, sans-serif; letter-spacing: .15em; text-transform: uppercase; }
+        main { overflow: hidden; }
+        .hero { position: relative; min-height: 690px; min-height: min(790px, 90svh); display: grid; place-items: center; padding: 90px 24px 110px; text-align: center; isolation: isolate; }
+        .sunflower { position: absolute; z-index: -2; width: min(760px, 95%); height: 94%; top: 2%; left: 50%; transform: translateX(-50%); pointer-events: none; }
+        .petal { position: absolute; inset: 0; transform: rotate(var(--angle)); }
+        .petal::before { content: ""; position: absolute; width: 22%; height: 43%; left: 39%; top: 0; border-radius: 50% 50% 45% 45% / 75% 75% 25% 25%; background: linear-gradient(to bottom, #f5dc80, #dfb846); border: 1px solid #c9a34440; }
+        .petal:nth-child(even)::before { background: linear-gradient(to bottom, #f9e6a2, #e9c358); }
+        .sunflower::after { content: ""; position: absolute; inset: 16%; border-radius: 50%; background: radial-gradient(ellipse, #faf5de 45%, #f1e5bd 78%, #c3a66b 100%); border: 2px solid #bba16e; box-shadow: 0 0 0 7px #c9ab6a33; }
+        .eyebrow { font: 11px/1.7 Arial, sans-serif; letter-spacing: .25em; text-transform: uppercase; }
+        h1 { margin: 25px 0; font-family: "Comic Sans MS", "Comic Sans", cursive; font-size: clamp(46px, 7vw, 82px); font-weight: 400; line-height: 1.15; letter-spacing: -.045em; }
+        h1 span { display: block; }
+        h1 .ampersand { font-family: Georgia, serif; font-style: italic; font-size: .6em; margin: 8px 0; color: #6b8062; }
+        .intro { font-size: 19px; line-height: 1.7; margin: 24px 0 14px; }
+        .year { display: flex; align-items: center; justify-content: center; gap: 18px; font-size: 23px; letter-spacing: .18em; }
+        .year::before, .year::after { content: ""; width: 38px; height: 1px; background: #8b9b80; }
+        .hero-link { display: inline-block; margin-top: 32px; font: 11px/1.6 Arial, sans-serif; letter-spacing: .13em; text-transform: uppercase; }
+        .branch { position: absolute; width: 150px; height: 370px; border-left: 3px solid #708766; border-radius: 50%; z-index: -1; opacity: .8; }
+        .branch-left { left: calc(50% - 365px); bottom: 40px; transform: rotate(-28deg); }
+        .branch-right { right: calc(50% - 360px); top: 55px; transform: rotate(150deg) scale(.85); }
+        .leaf { position: absolute; width: 85px; height: 35px; background: #879c77; border-radius: 0 90% 0 90%; transform-origin: left center; left: 0; }
+        .leaf:nth-child(1) { top: 45px; transform: rotate(-45deg); }
+        .leaf:nth-child(2) { top: 100px; transform: rotate(195deg); background: #a6b496; }
+        .leaf:nth-child(3) { top: 150px; transform: rotate(-30deg); width: 100px; }
+        .leaf:nth-child(4) { top: 215px; transform: rotate(195deg); background: #a6b496; }
+        .leaf:nth-child(5) { top: 265px; transform: rotate(-20deg); }
+        .welcome { max-width: 690px; margin: auto; padding: 65px 28px 80px; text-align: center; }
+        .small-flower { font-size: 32px; color: #7b8e6a; }
+        h2 { font-size: clamp(30px, 4vw, 42px); font-weight: 400; line-height: 1.2; margin: 20px 0; }
+        .welcome p { color: var(--muted); font-size: 18px; line-height: 1.85; }
+        .details { margin: 0 24px 60px; padding: 48px 24px; background: #e9eddf; text-align: center; border-top: 1px solid #cad3bd; border-bottom: 1px solid #cad3bd; }
+        .details h2 { font-size: 29px; }
+        .details p:last-child { max-width: 470px; margin: 0 auto; color: var(--muted); line-height: 1.8; font-size: 17px; }
+        footer { padding: 0 24px 35px; text-align: center; }
+        footer .signature { font-style: italic; font-size: 22px; margin-bottom: 12px; }
+        footer .eyebrow { font-size: 9px; color: var(--muted); }
+        @media (min-width: 1000px) { .details { max-width: 1000px; margin-left: auto; margin-right: auto; } }
+        @media (max-width: 600px) {
+            .navigation { padding: 22px 24px; }
+            .hero { min-height: 650px; padding-top: 75px; }
+            .sunflower { width: 580px; height: 590px; top: 10px; }
+            .sunflower::after { inset: 15% 20%; }
+            .branch-left { left: -55px; bottom: 0; transform: rotate(-20deg) scale(.65); }
+            .branch-right { right: -65px; top: 25px; transform: rotate(155deg) scale(.6); }
+            .intro { font-size: 17px; }
+            .welcome { padding-top: 35px; padding-bottom: 55px; }
+            .details { margin-left: 16px; margin-right: 16px; }
+        }
+        @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+    </style>
 </head>
 <body>
-    <h1>Solveig og Fredrick</h1>
-    <p>Vi skal gifte oss i 2027!</p>
+    <header class="navigation">
+        <a class="monogram" href="#" aria-label="Solveig og Fredrick, hjem">S &amp; F</a>
+        <a href="#informasjon">Om bryllupet</a>
+    </header>
+    <main>
+        <section class="hero" aria-labelledby="names">
+            <div class="sunflower" aria-hidden="true">
+                <i class="petal" style="--angle: 0deg"></i>
+                <i class="petal" style="--angle: 22.5deg"></i>
+                <i class="petal" style="--angle: 45deg"></i>
+                <i class="petal" style="--angle: 67.5deg"></i>
+                <i class="petal" style="--angle: 90deg"></i>
+                <i class="petal" style="--angle: 112.5deg"></i>
+                <i class="petal" style="--angle: 135deg"></i>
+                <i class="petal" style="--angle: 157.5deg"></i>
+                <i class="petal" style="--angle: 180deg"></i>
+                <i class="petal" style="--angle: 202.5deg"></i>
+                <i class="petal" style="--angle: 225deg"></i>
+                <i class="petal" style="--angle: 247.5deg"></i>
+                <i class="petal" style="--angle: 270deg"></i>
+                <i class="petal" style="--angle: 292.5deg"></i>
+                <i class="petal" style="--angle: 315deg"></i>
+                <i class="petal" style="--angle: 337.5deg"></i>
+            </div>
+            <div class="branch branch-left" aria-hidden="true"><i class="leaf"></i><i class="leaf"></i><i class="leaf"></i><i class="leaf"></i><i class="leaf"></i></div>
+            <div class="branch branch-right" aria-hidden="true"><i class="leaf"></i><i class="leaf"></i><i class="leaf"></i><i class="leaf"></i><i class="leaf"></i></div>
+            <div>
+                <p class="eyebrow">Vi skal gifte oss!</p>
+                <h1 id="names"><span>Solveig</span><span class="ampersand">&amp;</span><span>Fredrick</span></h1>
+                <p class="intro">Et nytt kapittel. Sammen med dere.</p>
+                <div class="year">2027</div>
+                <a class="hero-link" href="#informasjon">Les mer om dagen &darr;</a>
+            </div>
+        </section>
+        <section class="welcome" id="informasjon" aria-labelledby="welcome-title">
+            <div class="small-flower" aria-hidden="true">✳</div>
+            <p class="eyebrow">Kjærlighet skal feires</p>
+            <h2 id="welcome-title">Vår dag, med våre favorittfolk.</h2>
+            <p>Vi gleder oss til å samle menneskene vi er glade i, og feire starten på resten av livet sammen. Det blir en dag fylt med kjærlighet, latter og gode minner.</p>
+        </section>
+        <section class="details" aria-labelledby="details-title">
+            <p class="eyebrow">Bryllup 2027</p>
+            <h2 id="details-title">Mer informasjon kommer</h2>
+            <p>Dato, sted og praktiske detaljer deler vi her etter hvert. Vi gleder oss til å feire sammen med dere!</p>
+        </section>
+    </main>
+    <footer>
+        <p class="signature">Med kjærlighet, Solveig &amp; Fredrick</p>
+        <p class="eyebrow">Sammen er et fint sted å være · 2027</p>
+    </footer>
 </body>
 </html>
