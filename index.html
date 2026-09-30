@@ -31,6 +31,31 @@
         .year { display: flex; align-items: center; justify-content: center; gap: 18px; font-size: 23px; letter-spacing: .18em; }
         .year::before, .year::after { content: ""; width: 38px; height: 1px; background: #8b9b80; }
         .hero-link { display: inline-block; margin-top: 32px; font: 11px/1.6 Arial, sans-serif; letter-spacing: .13em; text-transform: uppercase; }
+        .celebrate { display: block; margin: 20px auto 0; padding: 12px 24px; border: 1px solid var(--forest); border-radius: 30px; background: var(--forest); color: var(--cream); font: 14px/1.5 Georgia, serif; cursor: pointer; }
+        .celebrate:hover { background: #45634b; }
+        .celebrate[hidden] { display: none; }
+        .celebrate:focus-visible { outline: 2px solid var(--forest); outline-offset: 5px; }
+        .fireworks { position: absolute; inset: 0; z-index: 2; overflow: hidden; pointer-events: none; }
+        .burst { position: absolute; width: 0; height: 0; }
+        .spark { position: absolute; width: 22px; height: 5px; border-radius: 50%; background: var(--spark-color); box-shadow: 0 0 6px var(--spark-color); animation: explode 2200ms cubic-bezier(.15,.6,.35,1) both; animation-delay: var(--delay); }
+        .rocket { position: absolute; width: 5px; height: 65px; border-radius: 50%; background: linear-gradient(#ac6a12, #efbd42, transparent); animation: launch 700ms ease-in both; animation-delay: var(--launch-delay); }
+        .blast-ring { position: absolute; width: 90px; height: 90px; border: 4px solid #d69a22; border-radius: 50%; animation: shockwave 1000ms ease-out both; animation-delay: var(--delay); }
+        @keyframes launch {
+            0% { opacity: 0; transform: translate(-50%, 350px) scaleY(.3); }
+            20% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { opacity: 0; transform: translate(-50%, 0) scaleY(1); }
+        }
+        @keyframes shockwave {
+            from { opacity: .85; transform: translate(-50%, -50%) scale(.1); }
+            to { opacity: 0; transform: translate(-50%, -50%) scale(3); }
+        }
+        @keyframes explode {
+            0% { opacity: 0; transform: translate(-50%, -50%) rotate(var(--angle)) scale(.2); }
+            5% { opacity: 1; }
+            65% { opacity: 1; }
+            100% { opacity: 0; transform: translate(var(--dx), var(--dy)) rotate(var(--angle)) scale(.5); }
+        }
         .branch { position: absolute; width: 150px; height: 370px; border-left: 3px solid #708766; border-radius: 50%; z-index: -1; opacity: .8; }
         .branch-left { left: calc(50% - 365px); bottom: 40px; transform: rotate(-28deg); }
         .branch-right { right: calc(50% - 360px); top: 55px; transform: rotate(150deg) scale(.85); }
@@ -72,6 +97,7 @@
     </header>
     <main>
         <section class="hero" aria-labelledby="names">
+            <div class="fireworks" aria-hidden="true"></div>
             <div class="sunflower" aria-hidden="true">
                 <i class="petal" style="--angle: 0deg"></i>
                 <i class="petal" style="--angle: 22.5deg"></i>
@@ -98,6 +124,7 @@
                 <p class="intro">Et nytt kapittel. Sammen med dere.</p>
                 <div class="year">2027</div>
                 <a class="hero-link" href="#informasjon">Les mer om dagen &darr;</a>
+                <button class="celebrate" type="button" hidden>La oss feire! ✨</button>
             </div>
         </section>
         <section class="welcome" id="informasjon" aria-labelledby="welcome-title">
@@ -116,5 +143,48 @@
         <p class="signature">Med kjærlighet, Solveig &amp; Fredrick</p>
         <p class="eyebrow">Sammen er et fint sted å være · 2027</p>
     </footer>
+    <script>
+        const celebrate = document.querySelector('.celebrate');
+        const fireworks = document.querySelector('.fireworks');
+        const colors = ['#b66a10', '#d99416', '#456b3b', '#da7936'];
+        let cleanup;
+
+        celebrate.hidden = false;
+        celebrate.addEventListener('click', () => {
+            clearTimeout(cleanup);
+            fireworks.replaceChildren();
+            const particles = document.createDocumentFragment();
+            const radius = Math.min(220, fireworks.clientWidth * .38);
+
+            for (const [index, [x, y]] of [[20, 28], [80, 35], [28, 55], [75, 60], [50, 22]].entries()) {
+                const burst = document.createElement('div');
+                burst.className = 'burst';
+                burst.style.left = `${x}%`;
+                burst.style.top = `${y}%`;
+                burst.style.setProperty('--launch-delay', `${index * 450}ms`);
+                burst.style.setProperty('--delay', `${index * 450 + 700}ms`);
+                for (const className of ['rocket', 'blast-ring']) {
+                    const effect = document.createElement('span');
+                    effect.className = className;
+                    burst.append(effect);
+                }
+                for (let i = 0; i < 48; i++) {
+                    const spark = document.createElement('span');
+                    const angle = (i / 48) * Math.PI * 2;
+                    const distance = radius * (.55 + Math.random() * .45);
+                    spark.className = 'spark';
+                    spark.style.setProperty('--angle', `${angle}rad`);
+                    spark.style.setProperty('--dx', `${Math.cos(angle) * distance}px`);
+                    spark.style.setProperty('--dy', `${Math.sin(angle) * distance + 25}px`);
+                    spark.style.setProperty('--spark-color', colors[i % colors.length]);
+                    burst.append(spark);
+                }
+                particles.append(burst);
+            }
+
+            fireworks.append(particles);
+            cleanup = setTimeout(() => fireworks.replaceChildren(), 5000);
+        });
+    </script>
 </body>
 </html>
